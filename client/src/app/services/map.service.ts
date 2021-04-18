@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Episode } from 'app/data/episode';
 import { Town } from 'app/data/town';
+import { GeoJson } from 'app/data/geojson';
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +17,19 @@ export class MapService {
 
   constructor(private http: HttpClient) { }
 
+  getLatestDate(): Observable<Boolean>{
+    return this.http.get<Boolean>(this.BASE_URL+'/latestDate');
+  }
+
   getPoints(rssData: Episode[]): Observable<Town[]>{
     return this.http.post<Town[]>(this.BASE_URL + '/coordinates', rssData);
   }
 
   getEpisodeData(): Observable<Episode[]> {
     return this.http.get<Episode[]>(this.BASE_URL + '/rssData');
+  }
+
+  getGeoJsonData(): Observable<GeoJson[]>{
+    return this.http.get<GeoJson[]>(this.BASE_URL + '/geojson');
   }
 }

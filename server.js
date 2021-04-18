@@ -5,6 +5,7 @@ const https = require('https');
 let Parser = require('rss-parser');
 const axios = require('axios');
 const { response } = require('express');
+const dateMath = require('date-arithmetic');
 
 const CONSTANTS = {
     RSS_URL: 'https://www.omnycontent.com/d/playlist/aaea4e69-af51-495e-afc9-a9760146922b/46c6373e-26ec-4a0d-a300-aadc0017dd97/e67fc310-4408-4735-8916-aadc0017dda5/podcast.rss',
@@ -46,12 +47,26 @@ app.get('/api/rssData', async (req, res) => {
             'episode': '',
             'city': '',
             'state': '',
-            'country': ''
+            'country': '',
+            'date': '',
+            'link': ''
         }
 
         data_temp['id'] = id++;
         var title = item['title'];
         data_temp['title'] = title;
+        data_temp['date'] = new Date(item['isoDate']);
+        data_temp['link'] = item['link'];
+
+        if(data_temp['id'] === 1){
+            let latestDate = data_temp['date'];
+            fs.writeFile('latestDate.txt', latestDate, function(err,data){
+                if(err){
+                    return console.log(err);
+                }
+                console.log(data)
+            });
+        }
 
         if(title.toLowerCase().includes('bonus')){
             return;
@@ -125,6 +140,7 @@ app.post('/api/coordinates', async (req, res) => {
     req.body['data'].forEach(episode => {
         const model ={
             'title': episode['title'],
+            'link': episode['link'],
             'coordinates': []
         }
         const request =  axios.get(CONSTANTS.OPENCAGE_URL,{
@@ -150,6 +166,52 @@ app.post('/api/coordinates', async (req, res) => {
     }), 5000);
     setTimeout(() => data.length = 0, 6000);
 });
+
+app.get('/api/latestDate', (req, res) =>{
+    fs.readFile('latestDate.txt', 'utf-8', (err, data) => {
+        if(err) throw err;
+
+        let date = new Date(data);
+        let weekLater = dateMath.add(date, 7, 'day');
+        let inRange = false;
+
+        if((Date.now() > date) && (Date.now() < weekLater)){
+            inRange = true;
+        }
+        res.send(inRange);
+    })
+});
+
+app.get('/api/geojson', (req, res) => {
+    fs.readFile('murderinfo.json', 'utf-8', (err, data) => {
+        if(err) throw err;
+
+        let geojson = []
+
+        let json_data = JSON.parse(data);
+
+        json_data.forEach(episode => {
+            let geojson_entry = {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": []
+                },
+                "properties": {
+                    "name": "",
+                    "link": ""
+                }
+            }
+
+            geojson_entry['geometry']['coordinates'] = [episode['coordinates']['lng'],episode['coordinates']['lat']];
+            geojson_entry['properties']['name'] = episode['title'];
+            geojson_entry['properties']['link'] = episode['link'];
+            geojson.push(geojson_entry);
+        });
+
+        res.send(geojson);
+    })
+})
 
 app.get('/', (req, res) => {
     res.send('App Works !!!!');

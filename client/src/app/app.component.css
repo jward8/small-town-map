@@ -1,6 +1,41 @@
-#map {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;
+#title{
+    font-family: 'Quicksand', sans-serif;
+    margin: 2px;
 }
+
+#murder{
+    font-family: 'Caveat', cursive;
+    color: #951f1e;
+}
+
+.container{
+    position: absolute;
+    color: white;
+    margin-top: 5px;
+    margin-left: 5px;
+    z-index: 1;
+    border: solid 1px #7c7c7c;
+    background-color: #909191;
+    border-radius: 5px;
+}
+
+li {
+    font-size: 24px;
+    list-style-type: none;
+    margin-top: 2%;
+    font-family: 'Quicksand', sans-serif;
+}
+
+a{
+    text-decoration: none;
+    color: #951f1e;
+}
+
+a:visited{
+    color: #951f1e;
+}
+
+.icons{
+    margin-right: 5%;
+}
+
