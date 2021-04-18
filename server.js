@@ -6,6 +6,12 @@ let Parser = require('rss-parser');
 const axios = require('axios');
 const { response } = require('express');
 
+const CONSTANTS = {
+    RSS_URL: 'https://www.omnycontent.com/d/playlist/aaea4e69-af51-495e-afc9-a9760146922b/46c6373e-26ec-4a0d-a300-aadc0017dd97/e67fc310-4408-4735-8916-aadc0017dda5/podcast.rss',
+    OPENCAGE_URL: 'https://api.opencagedata.com/geocode/v1/json',
+    OPENCAGE_API_KEY: 'e4266ab7583a4e048703406e0da69520'
+}
+
 const httpsAgent = new https.Agent({
     rejectUnauthorized: false
 });
@@ -16,7 +22,11 @@ const app = express(),
 
 const users = [];
 
-app.use(bodyParser.json());
+app.use(bodyParser.json(), function(req, res, next){
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 app.get('/api/rssData', async (req, res) => {
     const RSS_data = {
@@ -25,7 +35,7 @@ app.get('/api/rssData', async (req, res) => {
 
     const parser = new Parser();
 
-    const feed = await parser.parseURL('https://www.omnycontent.com/d/playlist/aaea4e69-af51-495e-afc9-a9760146922b/46c6373e-26ec-4a0d-a300-aadc0017dd97/e67fc310-4408-4735-8916-aadc0017dda5/podcast.rss');
+    const feed = await parser.parseURL(CONSTANTS.RSS_URL);
 
     var id = 1;
 
@@ -109,19 +119,17 @@ app.get('/api/rssData', async (req, res) => {
     res.send(RSS_data);
 });
 
-app.get('/api/coordinates', async (req, res) => {
+app.post('/api/coordinates', async (req, res) => {
     var data = [];
-    const URL = 'https://api.opencagedata.com/geocode/v1/json';
-    const KEY = 'e4266ab7583a4e048703406e0da69520';
 
     req.body['data'].forEach(episode => {
         const model ={
             'title': episode['title'],
             'coordinates': []
         }
-        const request =  axios.get(URL,{
+        const request =  axios.get(CONSTANTS.OPENCAGE_URL,{
             params: {
-                key: KEY,
+                key: CONSTANTS.OPENCAGE_API_KEY,
                 q: encodeURI(`${episode['city']}, ${episode['state']}`),
                 limit: 1,
                 no_annotations: 1
@@ -130,9 +138,7 @@ app.get('/api/coordinates', async (req, res) => {
         .then(res => res['data'])
         .then(json => {
             model['coordinates'] = json['results'][0]['geometry'];
-            console.log(`${episode['city']}, ${episode['state']}\n${JSON.stringify(model['coordinates'])}`);
             data.push(model);
-            console.log(data.length);
         });
     });
     setTimeout(() => res.send(data), 4000);
@@ -152,23 +158,3 @@ app.get('/', (req, res) => {
 app.listen(port, ()=>{
     console.log(`Server listening on the port::${port}`);
 });
-
-async function getCoordinates(episode){
-    const URL = 'https://api.opencagedata.com';
-    const KEY = 'e4266ab7583a4e048703406e0da69520';
-    const city = episode['city'];
-    const state = episode['state'];
-
-    // const meta = [
-    //     ['key', KEY],
-    //     ['q', encodeURI(`${city}, ${state}`)]
-    // ];
-    // const headers = new Headers(meta);
-    const options = {
-        method: 'GET',
-        
-        headers: {'key': KEY, 'q': encodeURI(`${city}, ${state}`)}
-    }
-
-    return await fetch(URL, options);
-}

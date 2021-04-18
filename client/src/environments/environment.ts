@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  server_url: 'http://localhost:3080/api',
+  coordinate_endpoint: '/coordinates',
+  rss_endpoint: '/rssData',
+  env_name: 'local'
 };
 
 /*

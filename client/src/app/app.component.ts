@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MAP_KEY, MAP_STYLE } from './data/KEYS';
 import mapboxgl from 'mapbox-gl';
+import { MapService } from './services/map.service';
+import { Episode } from './data/episode';
 
 @Component({
   selector: 'app-root',
@@ -11,16 +13,27 @@ export class AppComponent implements OnInit{
   title = 'small-town-map';
 
   map: any;
-  data: any;
   ep_data: Object = {
     'data': []
   };
 
-  constructor(){
+  constructor(private service: MapService){
 
   }
 
   ngOnInit(): void {
+    this.service.getEpisodeData().subscribe(
+      data => {
+        this.service.getPoints(data).subscribe(
+          data => {
+            console.log(data);
+          }
+        );
+      }
+    );
+
+    
+
     this.createMap();
   }
 
