@@ -7,16 +7,19 @@
     "start": "node index.js",
     "dev": "nodemon ./server.js localhost 3080",
     "debug": "nodemon --inspect ./server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd client && npm start",
+    "build": "concurrently \"npm run dev\" \"npm run client\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bbachi/angular-nodejs-example.git"
+    "url": "git+https://github.com/jward8/small-town-map.git"
   },
   "author": "JackMichael Ward",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
+    "concurrently": "^6.0.2",
     "date-arithmetic": "^4.1.0",
     "express": "^4.17.1",
     "form-data": "^4.0.0",
