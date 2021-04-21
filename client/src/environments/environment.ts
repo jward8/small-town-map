@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  server_url: 'http://localhost:3080/api',
+  server_url: 'https://localhost:3080/api',
   coordinate_endpoint: '/coordinates',
   rss_endpoint: '/rssData',
   env_name: 'local'

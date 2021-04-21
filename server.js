@@ -6,6 +6,8 @@ let Parser = require('rss-parser');
 const axios = require('axios');
 const { response } = require('express');
 const dateMath = require('date-arithmetic');
+const path = require('path');
+const serveStatic = require('serve-static');
 
 const CONSTANTS = {
     RSS_URL: 'https://www.omnycontent.com/d/playlist/aaea4e69-af51-495e-afc9-a9760146922b/46c6373e-26ec-4a0d-a300-aadc0017dd97/e67fc310-4408-4735-8916-aadc0017dda5/podcast.rss',
@@ -19,7 +21,7 @@ const httpsAgent = new https.Agent({
 
 const app = express(),
     bodyParser = require("body-parser"),
-    port = 3080;
+    port = process.env.PORT || 3080;
 
 const users = [];
 
@@ -28,6 +30,8 @@ app.use(bodyParser.json(), function(req, res, next){
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+
+app.use(serveStatic(__dirname+'/client/dist'));
 
 app.get('/api/rssData', async (req, res) => {
     const RSS_data = {
