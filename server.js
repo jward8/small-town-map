@@ -31,7 +31,7 @@ app.use(bodyParser.json(), function(req, res, next){
     next();
 });
 
-app.use(serveStatic(__dirname+'/dist'));
+app.use(serveStatic(__dirname+'/dist/small-town-map'));
 
 app.get('/api/rssData', async (req, res) => {
     const RSS_data = {
