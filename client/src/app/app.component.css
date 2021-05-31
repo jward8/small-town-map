@@ -15,8 +15,12 @@
     margin-left: 5px;
     z-index: 1;
     border: solid 1px #7c7c7c;
-    background-color: #909191;
-    border-radius: 5px;
+    background-image: linear-gradient(to right bottom, #4c1616, #531818, #5b1a1a, #621c1c, #6a1e1e, #702020, #772222, #7d2424, #842626, #8a2828, #912a2a, #982c2c);
+    border-radius: 82px;
+    top: 35%;
+    left: 65%;
+    width: 30vw;
+    height: 40vh;;
 }
 
 li {

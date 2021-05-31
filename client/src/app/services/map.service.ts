@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { Episode } from 'app/data/episode';
 import { Town } from 'app/data/town';
 import { GeoJson } from 'app/data/geojson';
+import { GeoCollection } from 'app/data/geocollection';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class MapService {
     return this.http.get<Episode[]>(this.BASE_URL + '/rssData');
   }
 
-  getGeoJsonData(): Observable<GeoJson[]>{
-    return this.http.get<GeoJson[]>(this.BASE_URL + '/geojson');
+  getGeoJsonData(): Observable<GeoCollection>{
+    return this.http.get<GeoCollection>(this.BASE_URL + '/geojson');
   }
 }

@@ -1,5 +1,11 @@
 export interface GeoJson {
     "type": string,
-    "geometry": object,
-    "properties": object
+    "geometry": {
+        'type': string,
+        "coordinates": number[]
+    },
+    "properties": {
+        "name": string,
+        "link": string
+    }
 }

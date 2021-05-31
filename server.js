@@ -186,6 +186,11 @@ app.get('/api/geojson', (req, res) => {
     fs.readFile('murderinfo.json', 'utf-8', (err, data) => {
         if(err) throw err;
 
+        let collection = {
+            "type": 'FeatureCollection',
+            'features': []
+        }
+
         let geojson = []
 
         let json_data = JSON.parse(data);
@@ -209,7 +214,9 @@ app.get('/api/geojson', (req, res) => {
             geojson.push(geojson_entry);
         });
 
-        res.send(geojson);
+        collection.features = geojson;
+
+        res.send(collection);
     })
 })
 
