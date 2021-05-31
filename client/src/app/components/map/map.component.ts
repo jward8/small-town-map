@@ -64,9 +64,9 @@ export class MapComponent implements OnInit{
         town.features.forEach(function (marker: GeoJson) {
           var mark = document.createElement('div');
           mark.className = 'marker';
-          mark.style.backgroundImage = "url(../../assets/0.5x/marker.png)"
-          mark.style.width = '40px';
-          mark.style.height = '40px';
+          mark.style.backgroundImage = "url(../../assets/0.33x/marker.png)"
+          mark.style.width = '27px';
+          mark.style.height = '27px';
     
           mark.addEventListener('click', function () {
             map.flyTo({center: [marker.geometry.coordinates[0] + .25 ,marker.geometry.coordinates[1]], zoom:10})
