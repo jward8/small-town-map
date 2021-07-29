@@ -17,7 +17,7 @@ export class AppComponent implements OnInit{
   ep_geojson: GeoCollection;
 
   constructor(private service: MapService){
-
+    
   }
 
   ngOnInit(): void {

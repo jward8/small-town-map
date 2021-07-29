@@ -18,10 +18,12 @@
   "author": "JackMichael Ward",
   "license": "ISC",
   "dependencies": {
+    "@angular/fire": "^6.1.5",
     "axios": "^0.21.1",
     "concurrently": "^6.0.2",
     "date-arithmetic": "^4.1.0",
     "express": "^4.17.1",
+    "firebase": "^8.8.0",
     "form-data": "^4.0.0",
     "jsdom": "^16.5.1",
     "node-fetch": "^2.6.1",

@@ -50,8 +50,8 @@ export class MapComponent implements OnInit{
     this.map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/jackmichael-ward/ckpa4ofcw3z5317o38q0w6xq1',
-      center: [-70.909416, 40.041069],
-      zoom: 3.5
+      center: [-109.909416, 40.041069],
+      zoom: 4
     });
     let map = this.map;
 
